@@ -1,7 +1,7 @@
+import parser
 import os,sys
-from parser import *
 
-commandtypes={'label':'C_LABEL','goto':'C_GOTO','if-goto':'C_IFGOTO','function':'C_FUNCTION','push':'C_PUSH','pop':'C_POP'}
+commandctypes={'label':'C_LABEL','goto':'C_GOTO','if-goto':'C_IFGOTO','function':'C_FUNCTION','push':'C_PUSH','pop':'C_POP'}
 arithmetics={'add':'''@SP
 A=M-1
 D=M
@@ -219,13 +219,14 @@ arg1s={'local':'LCL','argument':"ARG",'this':"THIS",'that':"THAT",'pointer':['TH
 temps={'push':pushtemp,'pop':poptemp}
 statics={'push':staticpush,'pop':staticpop}
 pushpop={'push':pushregex,'pop':popregex}
+pointers={'push':pointerpush,'pop':pointerpop}
 def writeArithmetic(command):
     return arithmetics[command]
-def writepushpop(command,a1,a2):
+def writepushpop(filename,command,a1,a2):
     if a1=='constant':
         code=constantregex%a2
     elif a1=='pointer':
-        code=pointerregex%arg1s[a1][a2]
+        code=pointers[command]%arg1s[a1][a2]
     elif a1=='temp':
         code=temps[command]%(a2+5)
     elif a1=='static':
@@ -234,36 +235,57 @@ def writepushpop(command,a1,a2):
         code=pushpop[command]%(a2,arg1s[a1])
     return code
 
+def decode(singlefile):
+    print(singlefile)
+    with open(singlefile,'r') as f:
+        name=os.path.basename(singlefile).split('.')[0]
+        asmname=os.path.join(os.path.dirname(singlefile),"%s.asm"%name)
+        asm=open(asmname,'w')
+        print(asmname)
+        print()
+        n=0
+        while True:
+            line=f.readline()
+            if line=='':
+                break
+            line=parser.removeun(line)
+            if line=='':
+                continue
+            n+=1
+            line=parser.removeun(line)
+            command=line.split()[0]
+            ctype=parser.commandType(command)
+            a1=parser.arg1(line,ctype)
+            if ctype=='C_ARITHMETIC':
+                code=writeArithmetic(command)
+                if command in ['eq','gt','lt']:
+                    code=code%(n,n,n,n,n,n,n)
+            elif ctype=='C_PUSH' or ctype=="C_POP":
+                a2=parser.arg2(line)
+                code=writepushpop(name,command,a1,a2)
+            asm.write("%s\n"%code)
+        asm.close()
 if len(sys.argv)<2:
     print('Usage:file/path')
     sys.exit()
 
-filename=sys.argv[1]
+fileorpath=os.path.abspath(sys.argv[1])
 
-with open(filename,'r') as f:
-    filename=filename.split('.')[0]
-    asm=open("%s.asm"%filename,'w')
-    n=0
-    while True:
-        line=f.readline()
-        if line=='':
-            break
-        line=removeun(line)
-        if line=='':
-            continue
-        n+=1
-        line=removeun(line)
-        command=line.split()[0]
-        type=commandType(command)
-        a1=arg1(line,type)
-        if type=='C_ARITHMETIC':
-            code=writeArithmetic(command)
-            if command in ['eq','gt','lt']:
-                code=code%(n,n,n,n,n,n,n)
-        elif type=='C_PUSH' or type=="C_POP":
-            a2=arg2(line)
-            code=writepushpop(command,a1,a2)
-        print('%s\t%s\n'%(line,code))
-        asm.write("%s\n"%code)
-    asm.close()
+#if os.path.isfile(fileorpath):
+#    decode(fileorpath)
+#else:
+#    for foldername,subfolders,filenames in os.walk(fileorpath):
+#        for filename in filenames:
+#            if filename.endswith('.vm'):
+#                decode(os.path.abspath(filename))
 
+def walkthrough(fop):
+    if os.path.isfile(fop):
+        if fop.endswith('.vm'):
+            decode(fop)
+    else:
+        for path in os.listdir(fop):
+            walkthrough(os.path.join(fop,path))
+
+
+walkthrough(fileorpath)

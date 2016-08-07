@@ -1,0 +1,743 @@
+@Sys.init
+                         0;JMP
+//function Class1.set 0
+@255
+            M=0
+            M=1
+(Class1.set)
+
+//push argument 0
+@255
+            M=0
+            M=1
+@0
+D=A
+@ARG
+A=M
+A=D+A
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//pop static 0
+@255
+            M=0
+            M=1
+@SP
+A=M-1
+D=M
+@Class1.0
+M=D
+@SP
+M=M-1
+//push argument 1
+@255
+            M=0
+            M=1
+@1
+D=A
+@ARG
+A=M
+A=D+A
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//pop static 1
+@255
+            M=0
+            M=1
+@SP
+A=M-1
+D=M
+@Class1.1
+M=D
+@SP
+M=M-1
+//push constant 0
+@255
+            M=0
+            M=1
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//return
+@255
+            M=0
+            M=1
+  @LCL
+D=M
+@T1
+M=D
+@5
+A=D-A
+D=M
+@T2
+M=D
+@SP
+A=M-1
+D=M
+@ARG
+A=M
+M=D
+@ARG
+D=M+1
+@SP
+M=D
+@T1
+D=M
+@1
+A=D-A
+D=M
+@THAT
+M=D
+@T1
+D=M
+@2
+A=D-A
+D=M
+@THIS
+M=D
+@T1
+D=M
+@3
+A=D-A
+D=M
+@ARG
+M=D
+@T1
+D=M
+@4
+A=D-A
+D=M
+@LCL
+M=D
+@T2
+A=M
+0;JMP
+//function Class1.get 0
+@255
+            M=0
+            M=1
+(Class1.get)
+
+//push static 0
+@255
+            M=0
+            M=1
+@Class1.0
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//push static 1
+@255
+            M=0
+            M=1
+@Class1.1
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//sub
+@255
+            M=0
+            M=1
+@SP
+A=M-1
+D=M
+A=A-1
+M=M-D
+@SP
+M=M-1
+//return
+@255
+            M=0
+            M=1
+  @LCL
+D=M
+@T1
+M=D
+@5
+A=D-A
+D=M
+@T2
+M=D
+@SP
+A=M-1
+D=M
+@ARG
+A=M
+M=D
+@ARG
+D=M+1
+@SP
+M=D
+@T1
+D=M
+@1
+A=D-A
+D=M
+@THAT
+M=D
+@T1
+D=M
+@2
+A=D-A
+D=M
+@THIS
+M=D
+@T1
+D=M
+@3
+A=D-A
+D=M
+@ARG
+M=D
+@T1
+D=M
+@4
+A=D-A
+D=M
+@LCL
+M=D
+@T2
+A=M
+0;JMP
+//function Class2.set 0
+@255
+            M=0
+            M=1
+(Class2.set)
+
+//push argument 0
+@255
+            M=0
+            M=1
+@0
+D=A
+@ARG
+A=M
+A=D+A
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//pop static 0
+@255
+            M=0
+            M=1
+@SP
+A=M-1
+D=M
+@Class2.0
+M=D
+@SP
+M=M-1
+//push argument 1
+@255
+            M=0
+            M=1
+@1
+D=A
+@ARG
+A=M
+A=D+A
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//pop static 1
+@255
+            M=0
+            M=1
+@SP
+A=M-1
+D=M
+@Class2.1
+M=D
+@SP
+M=M-1
+//push constant 0
+@255
+            M=0
+            M=1
+@0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//return
+@255
+            M=0
+            M=1
+  @LCL
+D=M
+@T1
+M=D
+@5
+A=D-A
+D=M
+@T2
+M=D
+@SP
+A=M-1
+D=M
+@ARG
+A=M
+M=D
+@ARG
+D=M+1
+@SP
+M=D
+@T1
+D=M
+@1
+A=D-A
+D=M
+@THAT
+M=D
+@T1
+D=M
+@2
+A=D-A
+D=M
+@THIS
+M=D
+@T1
+D=M
+@3
+A=D-A
+D=M
+@ARG
+M=D
+@T1
+D=M
+@4
+A=D-A
+D=M
+@LCL
+M=D
+@T2
+A=M
+0;JMP
+//function Class2.get 0
+@255
+            M=0
+            M=1
+(Class2.get)
+
+//push static 0
+@255
+            M=0
+            M=1
+@Class2.0
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//push static 1
+@255
+            M=0
+            M=1
+@Class2.1
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//sub
+@255
+            M=0
+            M=1
+@SP
+A=M-1
+D=M
+A=A-1
+M=M-D
+@SP
+M=M-1
+//return
+@255
+            M=0
+            M=1
+  @LCL
+D=M
+@T1
+M=D
+@5
+A=D-A
+D=M
+@T2
+M=D
+@SP
+A=M-1
+D=M
+@ARG
+A=M
+M=D
+@ARG
+D=M+1
+@SP
+M=D
+@T1
+D=M
+@1
+A=D-A
+D=M
+@THAT
+M=D
+@T1
+D=M
+@2
+A=D-A
+D=M
+@THIS
+M=D
+@T1
+D=M
+@3
+A=D-A
+D=M
+@ARG
+M=D
+@T1
+D=M
+@4
+A=D-A
+D=M
+@LCL
+M=D
+@T2
+A=M
+0;JMP
+//function Sys.init 0
+@255
+            M=0
+            M=1
+(Sys.init)
+
+//push constant 6
+@255
+            M=0
+            M=1
+@6
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//push constant 8
+@255
+            M=0
+            M=1
+@8
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//call Class1.set 2
+@255
+            M=0
+            M=1
+
+@Sys.return1
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@LCL
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@ARG
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@THIS
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@THAT
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@2
+D=A
+@5
+D=D+A
+@SP
+D=M-D
+@ARG
+M=D
+@SP
+D=M
+@LCL
+M=D
+@Class1.set
+0;JMP
+(Sys.return1)
+
+//pop temp 0
+@255
+            M=0
+            M=1
+@SP
+A=M-1
+D=M
+@R5
+M=D
+@SP
+M=M-1
+
+//push constant 23
+@255
+            M=0
+            M=1
+@23
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//push constant 15
+@255
+            M=0
+            M=1
+@15
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+//call Class2.set 2
+@255
+            M=0
+            M=1
+
+@Sys.return2
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@LCL
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@ARG
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@THIS
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@THAT
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@2
+D=A
+@5
+D=D+A
+@SP
+D=M-D
+@ARG
+M=D
+@SP
+D=M
+@LCL
+M=D
+@Class2.set
+0;JMP
+(Sys.return2)
+
+//pop temp 0
+@255
+            M=0
+            M=1
+@SP
+A=M-1
+D=M
+@R5
+M=D
+@SP
+M=M-1
+
+//call Class1.get 0
+@255
+            M=0
+            M=1
+
+@Sys.return3
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@LCL
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@ARG
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@THIS
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@THAT
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@0
+D=A
+@5
+D=D+A
+@SP
+D=M-D
+@ARG
+M=D
+@SP
+D=M
+@LCL
+M=D
+@Class1.get
+0;JMP
+(Sys.return3)
+
+//call Class2.get 0
+@255
+            M=0
+            M=1
+
+@Sys.return4
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+@LCL
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@ARG
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@THIS
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@THAT
+            D=M
+            @SP
+            A=M
+            M=D
+            @SP
+            M=M+1
+@0
+D=A
+@5
+D=D+A
+@SP
+D=M-D
+@ARG
+M=D
+@SP
+D=M
+@LCL
+M=D
+@Class2.get
+0;JMP
+(Sys.return4)
+
+//label WHILE
+@255
+            M=0
+            M=1
+(Sys.init$WHILE)
+//goto WHILE
+@255
+            M=0
+            M=1
+@Sys.init$WHILE
+                    0;JMP

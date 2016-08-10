@@ -39,22 +39,22 @@ def gettokens(line):
 
 def tokenType(token):
     if token in KEYWORDS:
-        return 'KEYWORD'
+        return 'keyword'
     elif token in SYMBOLES:
-        return 'SYMBOL'
+        return 'symbol'
     elif token.isdigit():
-        return 'INI_CONST'
+        return 'integerConstant'
     elif token.startswith('"') and token.endswith('"'):
-        return 'STRING_CONST'
+        return 'stringConstant'
     else:
-        return 'IDENTIFIER'
+        return 'identifier'
 
 
 def keyword(token):
     return token
 
 
-def symbol(token, line):
+def symbol(token):
     if token == '<':
         token = '&lt;'
     elif token == '>':
@@ -82,63 +82,28 @@ def purifier(line):
     line = line.strip()
     return line
 
-
-def tokenizer(jackfile):
-    print('beginning tokenizing %s ...' % jackfile)
-    basename = os.path.basename(jackfile).split('.')[0]
-    outfilename = os.path.join(dirname, '%sT.xml' % basename)
-    print('output to %s......' % outfilename)
-    with open(jackfile) as jack:
-        xml = open(outfilename, 'w')
-        xml.write('<tokens>\n')
-        while True:
-            line = jack.readline()
-            if not line:
-                break
-            if '/*' in line:
-                while not '*/' in line:
-                    line = jack.readline()
-                continue
-            line = purifier(line)
-            if not line:
-                continue
-            tokens = gettokens(line)
-            for i in tokens:
-                t = tokenType(i)
-                if t == 'KEYWORD':
-                    xml.write('\t<keyword> %s </keyword>\n' % keyword(i))
-                elif t == 'SYMBOL':
-                    xml.write('\t<symbol> %s </symbol>\n' % symbol(i, line))
-                elif t == 'INI_CONST':
-                    xml.write(
-                        '\t<integerConstant> %i </integerConstant>\n' % intVal(i))
-                elif t == 'STRING_CONST':
-                    xml.write(
-                        '\t<stringConstant> %s </stringConstant>\n' % stringVal(i))
-                elif t == 'IDENTIFIER':
-                    xml.write('\t<identifier> %s </identifier>\n' %
-                              identifier(i))
-    xml.write('</tokens>')
-    xml.close()
-    print('DONE!')
+writetokens = {'keyword': keyword, 'identifier': identifier,
+               'symbol': symbol, 'integerConstant': intVal, 'stringConstant': stringVal}
 
 
-if len(sys.argv) < 2:
-    print('Usage: [file/path]')
-    sys.exit()
+def writetoken(token, f):
+    t = tokenType(token)
+    f.write('<%s> %s </%s>\n' % (t, writetokens[t](token), t))
 
-abspath = os.path.abspath(sys.argv[1])
-tokenfolder = os.path.abspath('testtokenizer')
 
-if os.path.isdir(sys.argv[1]):
-    for foldername, subfolders, filenames in os.walk(abspath):
-        for filename in filenames:
-            if filename.endswith('.jack'):
-                dirname = os.path.join(
-                    tokenfolder, os.path.basename(foldername))
-                if not os.path.exists(dirname):
-                    os.mkdir(dirname)
-                filepath = os.path.join(os.path.abspath(foldername), filename)
-                tokenizer(filepath)
-else:
-    tokenizer(abspath)
+def tokenizer(jackfile, tokens):
+
+    while True:
+        line = jackfile.readline()
+        if not line:
+            break
+        if '/*' in line:
+            while not '*/' in line:
+                line = jackfile.readline()
+            continue
+        line = purifier(line)
+        if not line:
+            continue
+        temp = gettokens(line)
+        for i in temp:
+            tokens.append(i)

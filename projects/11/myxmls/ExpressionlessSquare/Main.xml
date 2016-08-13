@@ -1,0 +1,1018 @@
+
+<class>
+['keyword', 'class']
+['identifier', 'SquareGame']
+NONE
+category: class
+['symbol', '{']
+
+<classVarDec>
+['keyword', 'field']
+['identifier', 'Square']
+NONE
+category: class
+['identifier', 'square']
+NONE
+category: Square
+['symbol', ';']
+</classVarDec>
+
+
+<classVarDec>
+['keyword', 'field']
+['keyword', 'int']
+['identifier', 'direction']
+NONE
+category: int
+['symbol', ';']
+</classVarDec>
+
+
+<subroutineDec>
+['keyword', 'constructor']
+['identifier', 'SquareGame']
+NONE
+category: class
+['identifier', 'new']
+NONE
+category: subroutine
+['symbol', '(']
+
+<parameterList>
+</parameterList>
+
+['symbol', ')']
+
+<subroutineBody>
+['symbol', '{']
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'square']
+field
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'square']
+field
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'direction']
+field
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'direction']
+field
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+
+<returnStatement>
+['keyword', 'return']
+
+<expression>
+
+<term>
+['identifier', 'square']
+field
+</term>
+
+</expression>
+
+['symbol', ';']
+</returnStatement>
+
+</statements>
+
+['symbol', '}']
+</subroutineBody>
+
+</subroutineDec>
+
+
+<subroutineDec>
+['keyword', 'method']
+['keyword', 'void']
+['identifier', 'dispose']
+NONE
+category: subroutine
+['symbol', '(']
+
+<parameterList>
+</parameterList>
+
+['symbol', ')']
+
+<subroutineBody>
+['symbol', '{']
+
+<statements>
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'square']
+field
+['symbol', '.']
+['identifier', 'dispose']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'Memory']
+arg
+['symbol', '.']
+['identifier', 'deAlloc']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+
+<expression>
+
+<term>
+['identifier', 'square']
+field
+</term>
+
+</expression>
+
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+
+<returnStatement>
+['keyword', 'return']
+['symbol', ';']
+</returnStatement>
+
+</statements>
+
+['symbol', '}']
+</subroutineBody>
+
+</subroutineDec>
+
+
+<subroutineDec>
+['keyword', 'method']
+['keyword', 'void']
+['identifier', 'run']
+NONE
+category: subroutine
+['symbol', '(']
+
+<parameterList>
+</parameterList>
+
+['symbol', ')']
+
+<subroutineBody>
+['symbol', '{']
+
+<varDec>
+['keyword', 'var']
+['keyword', 'char']
+['identifier', 'key']
+var
+['symbol', ';']
+</varDec>
+
+
+<varDec>
+['keyword', 'var']
+['keyword', 'boolean']
+['identifier', 'exit']
+var
+['symbol', ';']
+</varDec>
+
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'exit']
+var
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+
+<whileStatement>
+['keyword', 'while']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'exit']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<whileStatement>
+['keyword', 'while']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'key']
+var
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'moveSquare']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+</statements>
+
+['symbol', '}']
+</whileStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'exit']
+var
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'exit']
+var
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'square']
+field
+['symbol', '.']
+['identifier', 'decSize']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'square']
+field
+['symbol', '.']
+['identifier', 'incSize']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'direction']
+field
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'exit']
+var
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'direction']
+field
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'direction']
+field
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'square']
+field
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'direction']
+field
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'direction']
+field
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<whileStatement>
+['keyword', 'while']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'key']
+var
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'key']
+var
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'moveSquare']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+</statements>
+
+['symbol', '}']
+</whileStatement>
+
+</statements>
+
+['symbol', '}']
+</whileStatement>
+
+
+<returnStatement>
+['keyword', 'return']
+['symbol', ';']
+</returnStatement>
+
+</statements>
+
+['symbol', '}']
+</subroutineBody>
+
+</subroutineDec>
+
+
+<subroutineDec>
+['keyword', 'method']
+['keyword', 'void']
+['identifier', 'moveSquare']
+NONE
+category: subroutine
+['symbol', '(']
+
+<parameterList>
+</parameterList>
+
+['symbol', ')']
+
+<subroutineBody>
+['symbol', '{']
+
+<statements>
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'direction']
+field
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'square']
+field
+['symbol', '.']
+['identifier', 'moveUp']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'direction']
+field
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'square']
+field
+['symbol', '.']
+['identifier', 'moveDown']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'direction']
+field
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'square']
+field
+['symbol', '.']
+['identifier', 'moveLeft']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<ifStatement>
+['keyword', 'if']
+['symbol', '(']
+
+<expression>
+
+<term>
+['identifier', 'direction']
+field
+</term>
+
+</expression>
+
+['symbol', ')']
+['symbol', '{']
+
+<statements>
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'square']
+field
+['symbol', '.']
+['identifier', 'moveRight']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+</statements>
+
+['symbol', '}']
+</ifStatement>
+
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'Sys']
+arg
+['symbol', '.']
+['identifier', 'wait']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+
+<expression>
+
+<term>
+['identifier', 'direction']
+field
+</term>
+
+</expression>
+
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+
+<returnStatement>
+['keyword', 'return']
+['symbol', ';']
+</returnStatement>
+
+</statements>
+
+['symbol', '}']
+</subroutineBody>
+
+</subroutineDec>
+
+['symbol', '}']
+</class>
+
+
+<class>
+['keyword', 'class']
+['identifier', 'Main']
+NONE
+category: class
+['symbol', '{']
+
+<subroutineDec>
+['keyword', 'function']
+['keyword', 'void']
+['identifier', 'main']
+NONE
+category: subroutine
+['symbol', '(']
+
+<parameterList>
+</parameterList>
+
+['symbol', ')']
+
+<subroutineBody>
+['symbol', '{']
+
+<varDec>
+['keyword', 'var']
+['identifier', 'SquareGame']
+NONE
+category: class
+['identifier', 'game']
+NONE
+category: SquareGame
+['symbol', ';']
+</varDec>
+
+
+<statements>
+
+<letStatement>
+['keyword', 'let']
+['identifier', 'game']
+var
+['symbol', '=']
+
+<expression>
+
+<term>
+['identifier', 'game']
+var
+</term>
+
+</expression>
+
+['symbol', ';']
+</letStatement>
+
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'game']
+var
+['symbol', '.']
+['identifier', 'run']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+
+<doStatement>
+['keyword', 'do']
+['identifier', 'game']
+var
+['symbol', '.']
+['identifier', 'dispose']
+NONE
+category: subroutine
+['symbol', '(']
+
+<expressionList>
+</expressionList>
+
+['symbol', ')']
+['symbol', ';']
+</doStatement>
+
+
+<returnStatement>
+['keyword', 'return']
+['symbol', ';']
+</returnStatement>
+
+</statements>
+
+['symbol', '}']
+</subroutineBody>
+
+</subroutineDec>
+
+['symbol', '}']
+</class>
+

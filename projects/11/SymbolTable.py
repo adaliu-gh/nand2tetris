@@ -1,5 +1,5 @@
 classtable = {'static': {}, 'field': {}}
-methodtable = {'var': {}, 'arg': {}}
+methodtable = {'variable': {}, 'argument': {}}
 symboltable = [classtable, methodtable]
 
 
@@ -14,7 +14,7 @@ def startNewTable():
     return
 
 
-def define(name, type, kind):
+def defineid(name, type, kind):
     index = varCount(kind)
     if kind in ['static', 'field']:
         classtable[kind][name] = [type, index]

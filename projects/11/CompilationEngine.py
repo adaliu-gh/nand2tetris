@@ -1,212 +1,312 @@
 from JackTokenizer import *
 from SymbolTable import *
-variables = []
-classes = []
-types = []
-subroutines = []
+from VMwriter import *
 
+def compileClass(tokens, tokennumber, filename, length):
+    variables = []
+    classes = []
+    types = []
+    subroutines = []
 
-def compileClass(tokens, tokennumber, syntax, length):
-
-    def printtoken(token):
-        t = tokenType(token)
-        syntax.append([t, writetokens[t](token)])
+    ifin = [0]
+    whin = [0]
+    ops = {'+':'add', '-':'sub', '/':'call Math.divide 2', '*':'call Math.multiply 2', '&':'and', '<':'lt', '|':'or', '>':'gt', '=':'eq'}
+    returntype=['']
+    classname=os.path.basename(filename).split('.')[0]
+    vmConstructor(filename)
+    def inc():
         tokennumber[0] += 1
         return
 
     def compileClassName():
         if tokens[tokennumber[0]] not in classes:
             classes.append(tokens[tokennumber[0]])
-        printtoken(tokens[tokennumber[0]])
+        inc()
         return
 
     def compileType():
         if tokens[tokennumber[0]] not in types:
             types.append(tokens[tokennumber[0]])
         if tokens[tokennumber[0]] in ['int', 'char', 'boolean']:
-            printtoken(tokens[tokennumber[0]])
+            inc()
         else:
             compileClassName()
         return
 
     def compileVarName():
-        if tokens[tokennumber[0]] not in variables:
-            variables.append(tokens[tokennumber[0]])
+        if (tokens[tokennumber[0]] not in classes) or (tokens[tokennumber[0]] not in subroutines):
+            id=tokens[tokennumber[0]]
+            tablestatus=kindOf(tokens[tokennumber[0]])
+            if tablestatus=='NONE':
+                m = tokennumber[0]
+                while tokens[m-1]==',':
+                    m = m - 2
+                type = tokens[m-1]
 
-        printtoken(tokens[tokennumber[0]])
+                m = tokennumber[0]
+                while True:
+                    if tokens[m-2]=='(':
+                        kind = 'argument'
+                        break
+                    elif tokens[m - 2]=='field':
+                        kind = 'field'
+                        break
+                    elif tokens[m - 2]=='variable':
+                        kind = 'variable'
+                        break
+                    elif tokens[m - 2]=='static':
+                        kind = 'static'
+                        break
+                    else:
+                        m = m - 1
+
+                defineid(id, type, kind)
+        inc()
         return
 
     def compileSubroutineName():
-        if tokens[tokennumber[0]] not in subroutines:
-            subroutines.append(tokens[tokennumber[0]])
-        printtoken(tokens[tokennumber[0]])
-        return
+        subroutinename='%s.%s'%(classname,tokens[tokennumber[0]])
+        if subroutinename not in subroutines:
+            subroutines.append(subroutinename)
+        inc()
+        return subroutinename
 
     def compileClassVarDec():
-        syntax.append('<classVarDec>')
+
         kind = tokens[tokennumber[0]]
-        printtoken(kind)
+        inc()
         compileType()
-        while True:
+        while tokens[tokennumber[0]]!=';':
             if tokens[tokennumber[0]] == ',':
-                printtoken(',')
-            elif tokens[tokennumber[0]] == ';':
-                printtoken(';')
-                break
+                inc()
             else:
                 compileVarName()
-
-        syntax.append('</classVarDec>')
+        inc()
         return
 
     def compileStatements():
-        syntax.append('<statements>')
 
         def compileExpression():
 
             def compileExpressionList():
-                syntax.append('<expressionList>')
-                while True:
-                    if tokennumber[0] == length:
-                        return
-                    if tokens[tokennumber[0]] == ')':
-                        syntax.append('</expressionList>')
-
-                        return
-                    elif tokens[tokennumber[0]] == ',':
-                        printtoken(',')
+                argnumber=0
+                while not (tokennumber[0]==length or tokens[tokennumber[0]]==')'):
+                    if tokens[tokennumber[0]] == ',':
+                        inc()
                     else:
                         compileExpression()
+                        argnumber+=1
+                return argnumber
 
             def compileSubroutineCall():
-
+                argnumber=0
                 if tokens[tokennumber[0] + 1] == '.':
-                    if tokens[tokennumber[0]] in classes:
-                        compileClassName()
+                    prefix=tokens[tokennumber[0]]
+                    inc()
+                    inc()
+                    if kindOf(prefix)!='NONE':
+                        writePush(kindOf(prefix),indexOf(prefix))
+                        writePop('pointer', 0)
+                        writePush('pointer', 0)
+                        subroutinename='%s.%s'%(typeOf(prefix),tokens[tokennumber[0]])
+                        argnumber=1
                     else:
-                        compileVarName()
-                    printtoken('.')
-                    compileSubroutineName()
-                    printtoken('(')
-                    compileExpressionList()
-                    printtoken(')')
+                        subroutinename=prefix+'.'+tokens[tokennumber[0]]
+                    inc()
                 else:
-
-                    compileSubroutineName()
-                    printtoken('(')
-                    compileExpressionList()
-                    printtoken(')')
-
+                    subroutinename=compileSubroutineName()
+                inc()
+                argnumber=argnumber+compileExpressionList()
+                inc()
+                writeCall(subroutinename, argnumber)
                 return
-            global compileSubroutineCall
+
 
             def compileTerm():
-                syntax.append('<term>')
                 if tokens[tokennumber[0]] in ['-', '~']:
-                    printtoken(tokens[tokennumber[0]])
+                    inc()
                     compileTerm()
+                    if tokens[tokennumber[0]] =='-':
+                        writeArithmetic('neg')
+                    else:
+                        writeArithmetic('not')
                 elif tokens[tokennumber[0]] == '(':
-                    printtoken('(')
+                    inc()
                     compileExpression()
-                    printtoken(')')
+                    inc()
                 elif tokens[tokennumber[0] + 1] in ['(', '.']:
                     compileSubroutineCall()
-
-                elif tokens[tokennumber[0]] in variables:
-                    compileVarName()
-                    if tokens[tokennumber[0]] == '[':
-                        printtoken('[')
+                elif kindOf(tokens[tokennumber[0]])!='NONE':
+                    kind=kindOf(tokens[tokennumber[0]])
+                    type=typeOf(tokens[tokennumber[0]])
+                    index=indexOf(tokens[tokennumber[0]])
+                    if type=='Array':
+                        writePush(kind, index)
+                        inc()
+                        inc()
                         compileExpression()
-                        printtoken(']')
+                        writeArithmetic('add')
+                        writePop('pointer',1)
+                        writePush('that', 0)
+                        inc()
+                    else:
+                        writePush(kind, index)
+                        inc()
+                elif tokenType(tokens[tokennumber[0]])=='stringConstant':
+                    nofstring=len(tokens[tokennumber[0]])-2
+                    writePush('constant', nofstring)
+                    writeCall('String.new', 1)
+                    for s in tokens[tokennumber[0]][1:-1]:
+                        writePush('constant', ord(s))
+                        writeCall('String.appendChar', 2)
+                    inc()
+                elif tokenType(tokens[tokennumber[0]])=='integerConstant':
+                    writePush('constant', int(tokens[tokennumber[0]]))
+                    inc()
                 elif tokens[tokennumber[0]] == '}':
-
                     return
-                else:
-
-                    printtoken(tokens[tokennumber[0]])
-
-                syntax.append('</term>')
+                elif tokens[tokennumber[0]] in ['true','false','null','this']:
+                    if tokens[tokennumber[0]]=='true':
+                        writePush('constant', 1)
+                        writeArithmetic('neg')
+                    elif tokens[tokennumber[0]]=='false':
+                        writePush('constant', 0)
+                    elif tokens[tokennumber[0]]=='null':
+                        writePush('constant', 0)
+                    else:
+                        writePush('pointer', 0)
+                    inc()
 
                 return
 
-            syntax.append('<expression>')
-            ops = ['+', '-', '/', '*', '&', '<', '|', '>', '=']
-            while True:
+            compileTerm()
+            while tokens[tokennumber[0]] in ops:
+                op=tokens[tokennumber[0]]
+                inc()
                 compileTerm()
-                if tokennumber[0] == length:
-                    return
-                if tokens[tokennumber[0]] in ops:
-                    printtoken(tokens[tokennumber[0]])
-                else:
-                    break
-            syntax.append('</expression>')
+                writecommon(ops[op])
 
             return
 
-        def compileLet():
-            syntax.append('<letStatement>')
-            printtoken('let')
-            compileVarName()
-            if tokens[tokennumber[0]] == '[':
-                printtoken('[')
-                compileExpression()
-                printtoken(']')
-            printtoken('=')
-            compileExpression()
-            printtoken(';')
-            syntax.append('</letStatement>')
+        def compileExpressionList():
+                argnumber=0
+                while not (tokennumber[0]==length or tokens[tokennumber[0]] ==')' ):
+                    if tokens[tokennumber[0]] == ',':
+                        inc()
+                    else:
+                        compileExpression()
+                        argnumber+=1
+                return argnumber
 
+        def compileSubroutineCall():
+            argnumber=0
+            if tokens[tokennumber[0] + 1] == '.':
+                prefix=tokens[tokennumber[0]]
+                inc()
+                inc()
+                if kindOf(prefix)!='NONE':
+                    writePush(kindOf(prefix),indexOf(prefix))
+                    writePop('pointer', 0)
+                    writePush('pointer', 0)
+                    subroutinename='%s.%s'%(typeOf(prefix),tokens[tokennumber[0]])
+                    argnumber=1
+                else:
+                    subroutinename=prefix+'.'+tokens[tokennumber[0]]
+                inc()
+            else:
+                subroutinename=compileSubroutineName()
+            inc()
+            argnumber=argnumber+compileExpressionList()
+            inc()
+            writeCall(subroutinename, argnumber)
+            return
+
+
+        def compileLet():
+            inc()
+            lethead=tokennumber[0]
+            while tokens[tokennumber[0]]!='=':
+                inc()
+            inc()
+            compileExpression()
+            tokennumber[0]=lethead
+            id=tokens[lethead]
+            kind=kindOf(id)
+            index=indexOf(id)
+            type=typeOf(id)
+            if type=='Array':
+                writePush(kind, index)
+                inc()
+                inc()
+                compileExpression()
+                writeArithmetic('add')
+                writePop('pointer',1)
+                writePop('that', 0)
+                return
+            elif type=='field':
+                writePop('this', index)
+            else:
+                writePop(kind, index)
+            while tokens[tokennumber[0]]!=';':
+                inc()
+            inc()
             return
 
         def compileIf():
-            syntax.append('<ifStatement>')
-            printtoken('if')
-            printtoken('(')
+            inc()
+            inc()
             compileExpression()
-            printtoken(')')
-            printtoken('{')
+            inc()
+            inc()
+            writeIf('if%i'%ifin[0])
+            writeGoto('else%i'%ifin[0])
+            writeLabel('if%i'%ifin[0])
             compileStatements()
-            printtoken('}')
+            inc()
+            writeGoto('endif%i'%ifin[0])
+            writeLabel('else%i'%ifin[0])
             if tokens[tokennumber[0]] == 'else':
-                printtoken('else')
-                printtoken('{')
+                inc()
+                inc()
                 compileStatements()
-                printtoken('}')
-            syntax.append('</ifStatement>')
-
+                inc()
+            writeLabel('endif%i'%ifin[0])
+            ifin[0]+=1
             return
 
         def compileWhile():
-            syntax.append('<whileStatement>')
-            printtoken('while')
-            printtoken('(')
+            writeLabel('whilehead%i'%whin[0])
+            inc()
+            inc()
             compileExpression()
-            printtoken(')')
-            printtoken('{')
+            writeIf('whilebody%i'%whin[0])
+            writeGoto('endwhile%i'%whin[0])
+            inc()
+            inc()
+            writeLabel('whilebody%i'%whin[0])
             compileStatements()
-            printtoken('}')
-            syntax.append('</whileStatement>')
-
+            inc()
+            writeGoto('whilehead%i'%whin[0])
+            writeLabel('endwhile%i'%whin[0])
+            whin[0]+=1
             return
 
         def compileDo():
-            syntax.append('<doStatement>')
-            printtoken('do')
+            inc()
             compileSubroutineCall()
-            printtoken(';')
-            syntax.append('</doStatement>')
-
+            inc()
             return
 
         def compileReturn():
-            syntax.append('<returnStatement>')
-            printtoken('return')
+            inc()
             if tokens[tokennumber[0]] != ';':
                 compileExpression()
-            printtoken(';')
-            syntax.append('</returnStatement>')
-
+            inc()
+            if returntype[0]=='void':
+                writePush('constant', 0)
+            writeReturn()
             return
+
         while True:
 
             if tokens[tokennumber[0]] == 'let':
@@ -221,78 +321,87 @@ def compileClass(tokens, tokennumber, syntax, length):
                 compileReturn()
             else:
                 break
-        syntax.append('</statements>')
         return
 
     def compileVarDec():
-        syntax.append('<varDec>')
-        printtoken('var')
+        inc()
         compileType()
-        while True:
+        localnumber=0
+        while tokens[tokennumber[0]]!=';':
             if tokens[tokennumber[0]] == ',':
-                printtoken(',')
-            elif tokens[tokennumber[0]] == ';':
-                printtoken(';')
-                break
+                inc()
             else:
                 compileVarName()
+                localnumber+=1
+        inc()
+        return localnumber
 
-        syntax.append('</varDec>')
-        return
+    def calculatelocal():
+        inc()
+        localnumber=0
+        while tokens[tokennumber[0]]=='var':
+            localnumber+=compileVarDec()
+        return localnumber
 
     def compileSubroutineBody():
-        syntax.append('<subroutineBody>')
-        printtoken('{')
-        while True:
-            if tokens[tokennumber[0]] == 'var':
-                compileVarDec()
-            else:
-                break
-        compileStatements()
-        printtoken('}')
-        syntax.append('</subroutineBody>')
+        inc()
+        while tokens[tokennumber[0]]=='var':
+            compileVarDec()
+        while tokens[tokennumber[0]]!='}':
+            compileStatements()
+        inc()
         return
 
-    def compileParameterList():
-        syntax.append('<parameterList>')
-        while True:
-            if tokens[tokennumber[0]] == ')':
-                syntax.append('</parameterList>')
 
-                return
-            elif tokens[tokennumber[0]] == ',':
-                printtoken(',')
+    def compileParameterList():
+        argnumber=0
+        while tokens[tokennumber[0]]!=')':
+            if tokens[tokennumber[0]] == ',':
+                inc()
             else:
                 compileType()
                 compileVarName()
+                argnumber+=1
+        return argnumber
 
     def compileSubroutineDec():
-        syntax.append('<subroutineDec>')
-        
-        if tokens[tokennumber[0]] in ['constructor', 'function', 'method']:
-            printtoken(tokens[tokennumber[0]])
-            compileType()
-        else:
-            printtoken('void')
-        compileSubroutineName()
-        printtoken('(')
-        compileParameterList()
-        printtoken(')')
+
+        # if tokens[tokennumber[0]]=='method':
+        #     argnumber=1
+        # else:
+        #     argnumber=0
+        inc()
+        returntype[0]=tokens[tokennumber[0]]
+        # if tokens[tokennumber[0]]!='void':
+
+        #     compileType()
+
+
+        inc()
+        name=compileSubroutineName()
+        inc()
+        bodybegin=tokennumber[0]
+        argnumber=calculatelocal()
+        tokennumber[0]=bodybegin
+        inc()
+        writeFunction(name, argnumber)
+        if name.endswith('.new'):
+            size=varCount('field')
+            writeFunction('Memory.alloc', size)
+            writePop('pointer', 0)
+            writePush('pointer', 0)
         compileSubroutineBody()
-        syntax.append('</subroutineDec>')
+
         return
 
-    syntax.append('<class>')
-    printtoken('class')
+    inc()
     compileClassName()
-    printtoken('{')
-    while True:
+    inc()
+    while tokens[tokennumber[0]]!='}':
         if tokens[tokennumber[0]] in ['static', 'field']:
             compileClassVarDec()
-        elif tokens[tokennumber[0]] in ['constructor', 'function', 'method', 'void']:
+        # elif tokens[tokennumber[0]] in ['constructor', 'function', 'method', 'void']:
+        #     compileSubroutineDec()
+        else:
             compileSubroutineDec()
-        elif tokens[tokennumber[0]] == '}':
-            printtoken('}')
-            break
-    syntax.append('</class>')
     return

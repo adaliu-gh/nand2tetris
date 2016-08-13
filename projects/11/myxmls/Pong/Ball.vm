@@ -1,0 +1,4 @@
+function Ball.new 0
+function Memory.alloc 15
+pop pointer 0
+push pointer 0

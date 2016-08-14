@@ -14,7 +14,7 @@ def writeReturn():
 	return
 
 def writeIf(label):
-	f.write('if-got %s\n'%label)
+	f.write('if-goto %s\n'%label)
 	return
 
 def writeGoto(label):

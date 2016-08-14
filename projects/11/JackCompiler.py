@@ -25,6 +25,7 @@ def jackanalyzer(jackfile):
     #     print(i)
     tokennumber = [0]
     print('get tokens successfully!')
+
     compileClass(tokens, tokennumber, outfilename, len(tokens))
     print('compile successfully!!!')
     tokens = []
@@ -36,7 +37,7 @@ if len(sys.argv) < 2:
     sys.exit()
 
 abspath = os.path.abspath(sys.argv[1])
-tokenfolder = os.path.abspath('myxmls')
+tokenfolder = os.path.abspath('translator')
 
 if os.path.isdir(sys.argv[1]):
     for foldername, subfolders, filenames in os.walk(abspath):

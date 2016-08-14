@@ -1,10 +1,11 @@
 classtable = {'static': {}, 'field': {}}
-methodtable = {'variable': {}, 'argument': {}}
+methodtable = {'local': {}, 'argument': {}}
 symboltable = [classtable, methodtable]
 
 
 def startSubroutine():
-    methodtable = {}
+    methodtable['local']={}
+    methodtable['argument']={}
     return
 
 

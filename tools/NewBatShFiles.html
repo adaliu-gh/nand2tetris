@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>New Nand2Tetris batch files for Windows</title>
+	<style>
+		pre {margin-left:2em;}
+		tt {font-size:120%;}
+	</style>
+</head>
+<body>
+This archive contains updated batch files and scripts for the Nand2Tetris 
+tools.  These batch files and scripts can be used from any working directory 
+without requiring full paths for their arguments.
+<p>
+The batch files have been tested on Windows XP and Windows 7 32- and 64-bit.  
+The scripts have been tested on Ubuntu Linux and Mac OS X.
+<p>
+For these batch files or scripts from the command line, you must add the 
+<tt>nand2tetris/tools</tt> directory to your PATH variable.  The batch files 
+and scripts do handle spaces in directory and file names so they will 
+work if Nand2Tetris is installed under "My Documents".
+<p>
+On Windows, the batch files will run by just typing their name (without 
+the .bat).  On Linux and Mac OS&nbsp;X you must change the scripts' attributes to
+include "executable".  It's also handy to make <b>symbolic</b> links [1] in your 
+<tt>~/bin</tt> 
+directory so that you don't need to type the .sh:
+<pre>
+ln -s ~/nand2tetris/tools/Assembler.sh Assembler
+chmod +x Assembler
+</pre>
+
+<p>
+<b>Note that on Windows 7 64-bit you need to install the 64-bit version of 
+Java so that 64-bit cmd.exe can run java commands in batch files.  If the 
+batch files say " 'java' is not recognized..." you likely only have the 32-bit 
+Java installed.</b>
+<p>
+On Windows, you can create desktop icons for the interactive tools&nbsp;&ndash; 
+HardwareSimulator, Assembler, CPUEmulator and VMEmulator&nbsp;&ndash; 
+by finding them in Explorer and right-clicking on them and pick 
+"Send&nbsp;to&nbsp;&gt;&nbsp;Desktop."  Edit the shortcuts' properties 
+and set "Run" to "minimized."
+<p>
+The batch files accept a "/?" option to show their usage, and
+the scripts accept "-h":
+<pre>
+C:\TECS\projects\09><u>JackCompiler /?</u>
+Usage:
+    JackCompiler              Compiles all .jack files in the current
+                              working directory.
+    JackCompiler DIRECTORY    Compiles all .jack files in DIRECTORY.
+    JackCompiler FILE.jack    Compiles FILE.jack to FILE.vm.</pre>
+<p>
+From the command line, typing "Assembler" will start the assembler in 
+interactive mode.  Typing "Assembler xxx.asm" will assemble xxx.asm generating 
+xxx.hack.  There is no way to automatically compare to expected output.  You 
+can automate this compare using the TextComparer tool.
+<p>
+&emsp;Successful assembly:
+<pre>
+C:\TECS\projects\04\fill&gt;<u>Assembler Fill.asm</u>
+Assembling "c:\TECS\projects\04\fill\Fill.asm"
+</pre>
+&emsp;Failed assembly: 
+<pre>
+C:\TECS\projects\04\fill&gt;<u>Assembler Fill.asm</u>
+Assembling "C:\TECS\projects\04\fill\Fill.asm"
+In line 15, Expression expected
+</pre>
+
+<p>
+From the command line, typing "HardwareSimulator" will run start the simulator 
+in interactive mode.  Typing "HardwareSimulator xxx.tst" will run the test 
+script in the simulator and report the result.
+<p>
+&emsp;Successful test:
+<pre>
+C:\TECS\projects\02&gt;<u>HardwareSimulator ALU.tst</u>
+End of script - Comparison ended successfully
+</pre>
+&emsp;Failed test:
+<pre>
+C:\TECS\projects\02&gt;<u>HardwareSimulator ALU.tst</u>
+Comparison failure at line 24
+</pre>
+&emsp;Error in associated HDL file:
+<pre>
+C:\TECS\projects\02&gt;<u>HardwareSimulator ALU.tst</u>
+In HDL file C:\TECS\projects\02\ALU.hdl, Line 60, out[16]: the specified sub 
+bus is not in the bus range: load ALU.hdl
+</pre>
+
+<p>
+CPUEmulator and VMEmulator work similarly, either opening the emulator in 
+interactive mode if there is no parameter, or running a test script.
+<p>
+With no arguments, "JackCompiler" will compile all files in the current 
+directory. With an argument, it will compiler a single Jack file or all 
+the files in the named directory. More than one argument is not supported.  
+Wildcards are not supported.
+<p>
+&emsp;Compile current directory:
+<pre>
+C:\TECS\projects\09\Reflect&gt;<u>JackCompiler</u>
+Compiling "c:\TECS\projects\09\Reflect"
+</pre>
+&emsp;Compile single file:
+<pre>
+C:\TECS\projects\09\Reflect&gt;<u>JackCompiler Mirrors.jack</u>
+Compiling "C:\TECS\projects\09\Reflect\Mirrors.jack"
+</pre>
+&emsp;Compile "Reflect" directory:
+<pre>
+C:\TECS\projects\09&gt;<u>JackCompiler Reflect</u>
+Compiling "C:\TECS\projects\09\Reflect"
+</pre>
+<p>
+TextComparer takes two files to compare and reports success or failure:
+<p>
+<pre>
+C:\TECS\projects\02&gt;<u>HardwareSimulator ALU.tst</u>
+Comparison failure at line 24
+
+C:\TECS\projects\02&gt;<u>TextComparer ALU.cmp ALU.out</u>
+Comparison failure in line 23:
+|0101101110100000|0001111011010010|1|1|0|0|0|0|0001111011010010|0|0|
+|0101101110100000|0001111011010010|1|1|0|0|0|0|0001111011010010|0|1|
+</pre>
+[Note line number discrepancy.]
+<p>
+The tools do not do sensible things with exit codes. If you use them in 
+automated testing you will need to capture and parse their output.
+<p>&nbsp;
+<p>
+21 June 2014<br>
+mark.armbrust@pobox.com
+<hr>
+[1] Why hard links don't work:&emsp;The class and jar files for the Nand2Tetris 
+tools are stored in subdirectories under the <tt>nand2tetris/tools</tt> directory.  
+The command that starts the tools needs to tell Java where these 
+files are located, and it uses relative paths to do so.  The script looks at 
+<tt>$0</tt> (argument 0 it the command's file path) and changes to that 
+directory before running the Java command.
+<p>
+If you put a hard link from <tt>~/bin/Xxx</tt> to <tt>~/nand2tetris/tools/Xxx.sh</tt> 
+then <tt>$0</tt> will say <tt>~/bin/Xxx</tt> so that is where the scrip will be 
+looking for the required subdirectories.
+<p>
+If you use a symbolic link, the script can test for that and follow the link to get 
+to the correct directory where Xxx.sh and the Java files are stored.
+</body>
+<!--
+$Id: NewBatShFiles.html,v 1.3 2014/05/09 22:36:58 MarkA Exp $
+-->

@@ -12,8 +12,8 @@ cd "`dirname "$script"`"
 if [ \( $# -gt 1 \) -o \( "$1" = "-h" \) -o \( "$1" = "--help" \) ]
 then
 	echo "Usage:"
-	echo "    `basename "$0"`             Starts the VM Emulator in interactive mode."
-	echo "    `basename "$0"` FILE.tst    Starts the VM Emulator and runs the FILE.tst test"
+	echo "    `basename "$0"`             Starts the VME in interactive mode."
+	echo "    `basename "$0"` FILE.tst    Starts the VME and runs the FILE.tst test"
 	echo "                              script.  The success/failure message is"
 	echo "                              printed to the command console."	
 elif [ $# -eq 0 ]

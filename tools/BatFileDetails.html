@@ -1,0 +1,64 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<title>Implementation details for the new Nand2Tetris batch files for Windows</title>
+	<style>
+		pre {margin-left:2em;}
+		tt {font-size:120%;}
+	</style>
+</head>
+<body>
+In general, see <a href="http://ss64.com/nt/">http://ss64.com/nt/</a> for tons of 
+useful info about Windows batch files.  It's the documentation that MS never 
+bothered to write.
+<p>
+<pre>
+setlocal
+</pre>	
+This command establishes a local scope for environment variables so that 
+they don't pollute the command shell's environment.  The local scope is 
+in effect until the end of the batch file.
+<pre>
+if not "%~1"=="" (
+	set "_arg1=%~f1"
+) else (
+	set "_arg1=%CD%"
+)
+</pre>	
+<tt>%~1</tt> is like <tt>%1</tt> (first argument) but it removes the quotes that may 
+surround the argument.  One should always use <tt>"%~1"</tt> instead of <tt>%1</tt> 
+so that quoted arguments are handled correctly.  It's the only way to sanely handle 
+stupidity like the "My Documents" folder!
+<p>
+This is from JackCompiler.bat.  If an argument is supplied, <tt>set&nbsp;"_arg1=%~f1"</tt> 
+sets <tt>_arg1</tt> to the fully qualified path for argument 1.  If no argument is 
+supplied, <tt>_arg1</tt> is set to the fully qualified path for the current 
+working directory.
+<p>
+For the other tools, there is no need to set <tt>_arg1</tt> if there is no argument.
+<pre>
+pushd "%~dp0"
+</pre>
+Saves the current working directory and changes to the directory containing the batch 
+file.  <tt>%~dp0</tt> returns the drive and path for argument 0 (the batch file name).  
+There will be a matching <tt>popd</tt> at the end of the batch file.
+<pre>
+if "%~1"=="" (
+  start javaw -classpath "%CLASSPATH%;.;bin/classes;bin/lib/Hack.jar;bin/lib/HackGUI.jar;bin/lib/Simulators.jar;bin/lib/SimulatorsGUI.jar;bin/lib/Compilers.jar" ^
+    HardwareSimulatorMain
+) else (
+  echo Running "%_arg1%"
+  java -classpath "%CLASSPATH%;.;bin/classes;bin/lib/Hack.jar;bin/lib/HackGUI.jar;bin/lib/Simulators.jar;bin/lib/SimulatorsGUI.jar;bin/lib/Compilers.jar" ^
+    HardwareSimulatorMain "%_arg1%"
+)
+</pre>
+The <tt>^</tt> at the end of the long lines is a line-continuation character supported by 
+cmd.exe.  Unfortunately, it cannot bu used to break the long quoted string path.
+<p>
+If no argument is supplied, <tt>javaw</tt> is started to run the tool in a stand-alone 
+window.  The batch file does not wait for the tool to exit.
+<p>
+If there is an argument, <tt>java</tt> is used to run the tool and the batch file waits 
+for the tool to exit before it continues.
+</body>

@@ -14,3 +14,6 @@
 #Project **11**
 -   complished -- August, 14, 2016
 -   *took me nearly 1 week, and I feel luckly that I didn't give up in despair.*
+
+#Project **12**
+-   [Array & Math & String] .class(es) finished -- August 15 2016

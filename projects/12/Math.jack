@@ -8,8 +8,27 @@
  */
 class Math {
 
+    static Array a;
+
     /** Initializes the library. */
     function void init() {
+
+        var int j,i,pro;
+        let j=0;
+        let i=0;
+        let a = Array.new(16);
+        while (j<16)    {
+            let pro=1;
+            while (i<j) {
+                let pro=pro+pro;
+                let i=i+1;
+            }
+            let a[j]=pro;
+            let j=j+1;
+        }
+        return;
+
+
     }
 
     /** Returns the absolute value of x. */
@@ -26,15 +45,26 @@ class Math {
     function int multiply(int x, int y) {
         var int sum;
         var int j;
-        let j =
-        while ()
+        var int shiftedx;
+        let shiftedx=x;
+        let j =0;
+        let sum=0;
+        while (j<16){
+            if ((a[j] & y)>0) {
+                let sum=sum+shiftedx;
+            }
+            let shiftedx=shiftedx+shiftedx;
+        }
+        return sum;
 
     }
 
     /** Returns the integer part of x/y. */
     function int divide(int x, int y) {
-    q=Math.divide(x,2*y)
-    if ((x-2*q*y)<y) {
+    var int q,r;
+    let q=Math.divide(x,2*y);
+    let r=(2*q)*y;
+    if ((x-r)<y) {
         return 2*q;
     }
     else    {
@@ -44,6 +74,25 @@ class Math {
 
     /** Returns the integer part of the square root of x. */
     function int sqrt(int x) {
+
+        var int y;
+        var int j;
+        var int j2;
+        var int i;
+        let y=0;
+        let j2=1;
+        let j=Math.divide(x,2)-1;
+        while (~(j<0))  {
+            let i =0;
+            while (i<j) {
+                let j2=j2*2;
+            }
+            if (~(((y+j2)*(y+j2))>x))  {
+                let y = y+j2;
+            }
+            let j=j-1;
+            }
+        return y;
     }
 
     /** Returns the greater number. */

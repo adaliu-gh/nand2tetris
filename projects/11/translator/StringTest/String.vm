@@ -1,0 +1,28 @@
+function String.new 2
+push constant 1
+call Memory.alloc 1
+pop pointer 0
+push constant 0
+pop local 1
+push argument 0
+push constant 1
+add
+call Array.new 1
+pop local 0
+label whilehead0
+push local 1
+push argument 0
+push constant 10
+add
+lt
+not
+if-goto endwhile0
+push constant 0
+push local 0
+push local 1
+add
+pop pointer 1
+pop that 0
+goto whilehead0
+label endwhile0
+push local 0

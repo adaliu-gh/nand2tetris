@@ -12,10 +12,8 @@ class String {
     /** Constructs a new empty String with a maximum length of maxLength. */
     constructor String new(int maxLength) {
 
-        var int i;
-        let i =0;
 
-        let string =Array.new(maxLength);
+        let string =Array.new(1);
         let max=maxLength;
         let n=0;
 
@@ -24,6 +22,7 @@ class String {
 
     /** De-allocates the string and frees its space. */
     method void dispose() {
+        do string.dispose();
         do Memory.deAlloc(this);
         return;
     }
@@ -35,7 +34,9 @@ class String {
 
     /** Returns the character at location j. */
     method char charAt(int j) {
+
         return string[j];
+
     }
 
     /** Sets the j'th character of this string to be c. */
@@ -47,15 +48,29 @@ class String {
     /** Appends the character c to the end of this String.
      *  Returns this string as the return value. */
     method String appendChar(char c) {
+        var Array tmp;
+       var int i;
 
-        let string[n]=c;
-        let n=n+1;
-        return this;
+       let n=n+1;
+
+       let i=0;
+       let tmp=Array.new(n);
+       while (i<(n-1)) {
+           let tmp[i]=string[i];
+           let i=i+1;
+       }
+       let tmp[n-1]=c;
+       do string.dispose();
+       let string=tmp;
+   return this;
+
+
     }
 
     /** Erases the last character from this String. */
     method void eraseLastChar() {
         let string[n-1]=0;
+        let n=n-1;
         return;
     }
 
@@ -64,46 +79,66 @@ class String {
     method int intValue() {
         var int j;
         var int sum;
-        var int notend;
-        let notend=-1;
+        var boolean notend;
+        var boolean fu;
+        let notend=true;
         let j=0;
-
+        let sum=0;
+        if (string[j]=45)  {
+            let fu=true;
+            let j=1;
+        }
+        else{
+            let fu=false;
+        }
         while (notend)    {
             if ((string[j]<48)|(string[j]>57)) {
-                let notend=0;
+                let notend=false;
             }
             else {
-                   let sum=sum*10+string[j];
+                   let sum=sum*10+(string[j]-48);
                     let j=j+1;
                 }
 
 
+        }
+        if (fu)    {
+        let sum=0-sum;
         }
         return sum;
 
 
     }
 
+    method void int2string(int number){
+    var int c;
+    let c=number-((number/10)*10)+48;
+    if (number<10)  {
+    do appendChar(c);
+    return;
+    }
+    else{
+    do int2string(number/10);
+    do appendChar(c);
+    return;
+    }
+
+    }
+
     /** Sets this String to hold a representation of the given number. */
     method void setInt(int number) {
-        var int c;
-        var int num;
 
-        if (number<0    ){
+        var int num;
+        let n=0;
+        if (number<0){
             let num=-number;
-            do appendChar("-");
+            do appendChar(45);
         }
         else {
             let num=number;
         }
-        let c=num-(num/10)+48;
-        if (num<10){
-           do appendChar(c);
-        }
-        else {
-            do setInt(num/10);
-            do appendChar(c);
-        }
+
+        do int2string(num);
         return;
 
     }

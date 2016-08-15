@@ -39,9 +39,7 @@ class String {
 
     /** Returns the character at location j. */
     method char charAt(int j) {
-        var char i;
-        let i=this[j];
-        return i;
+        return string[j];
     }
 
     /** Sets the j'th character of this string to be c. */
@@ -107,26 +105,35 @@ class String {
         var char c;
         let c=number-(number/10)+48;
         if (number<10){
-            return appendChar(c);
+            do appendChar(c);
+            return;
         }
         else {
-            return setInt(number/10).appendChar(c);
+            do setInt(number/10);
+            do appendChar(c);
+            return;
         }
 
     }
 
     /** Returns the new line character. */
     function char newLine() {
-        return 128;
+        var char=c;
+        let c=128;
+        return c;
     }
 
     /** Returns the backspace character. */
     function char backSpace() {
-        return 129;
+        var char=c;
+        let c=129;
+        return c;
     }
 
     /** Returns the double quote (") character. */
     function char doubleQuote() {
-        return 34;
+        var char=c;
+        let c=34;
+        return c;
     }
 }

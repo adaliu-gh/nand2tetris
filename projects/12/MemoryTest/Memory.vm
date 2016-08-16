@@ -1,7 +1,7 @@
 function Memory.init 0
-push constant 2408
-pop static 0
 push constant 0
+pop static 0
+push constant 2048
 push static 0
 add
 push constant 14334
@@ -9,10 +9,10 @@ pop temp 0
 pop pointer 1
 push temp 0
 pop that 0
-push constant 1
+push constant 2049
 push static 0
 add
-push constant 0
+push constant 2050
 pop temp 0
 pop pointer 1
 push temp 0
@@ -37,8 +37,8 @@ push temp 0
 pop that 0
 push constant 0
 return
-function Memory.alloc 2
-push static 0
+function Memory.alloc 3
+push constant 2048
 pop local 1
 label WHILE_EXP0
 push constant 0
@@ -51,6 +51,8 @@ gt
 not
 not
 if-goto WHILE_END0
+push local 1
+pop local 2
 push constant 1
 push local 1
 add
@@ -63,8 +65,22 @@ eq
 if-goto IF_TRUE0
 goto IF_FALSE0
 label IF_TRUE0
-push constant 1
-neg
+push constant 7
+call String.new 1
+push constant 102
+call String.appendChar 2
+push constant 97
+call String.appendChar 2
+push constant 105
+call String.appendChar 2
+push constant 108
+call String.appendChar 2
+push constant 117
+call String.appendChar 2
+push constant 114
+call String.appendChar 2
+push constant 101
+call String.appendChar 2
 return
 label IF_FALSE0
 goto WHILE_EXP0
@@ -75,9 +91,9 @@ push local 1
 add
 pop pointer 1
 push that 0
-add
 push argument 0
 sub
+add
 pop local 0
 push constant 0
 push local 1
@@ -100,13 +116,15 @@ push local 1
 add
 pop pointer 1
 push that 0
-push constant 0
-eq
+push constant 3
+lt
 if-goto IF_TRUE1
 goto IF_FALSE1
 label IF_TRUE1
-push constant 0
 push local 1
+pop local 0
+push constant 1
+push local 2
 add
 push constant 1
 push local 1
@@ -132,7 +150,7 @@ pop that 0
 push local 0
 return
 function Memory.deAlloc 1
-push static 0
+push constant 2048
 pop local 0
 label WHILE_EXP0
 push constant 1
@@ -153,20 +171,19 @@ push that 0
 pop local 0
 goto WHILE_EXP0
 label WHILE_END0
-push constant 1
-push local 0
-add
 push argument 0
 push constant 1
 sub
-pop temp 0
-pop pointer 1
-push temp 0
-pop that 0
+pop local 0
+push constant 0
+push local 0
+add
 push constant 1
+neg
 push argument 0
 add
-push constant 0
+pop pointer 1
+push that 0
 pop temp 0
 pop pointer 1
 push temp 0

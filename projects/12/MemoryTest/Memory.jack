@@ -7,31 +7,28 @@
  * Memory operations library.
  */
 class Memory {
-    static int freelist;
+    static Array freelist;
 
     /** Initializes memory parameters. */
     function void init() {
 
-        let freelist=2408;
-        let freelist[0]=14334;
-        let freelist[1]=null;
+        let freelist=0;
+        let freelist[2048]=14334;
+        let freelist[2049]=2050;
         return;
     }
 
     /** Returns the value of the main memory at the given address. */
     function int peek(int address) {
-        var int memory;
-        let memory=0;
-
-        return memory[address];
+        
+        return freelist[address];
     }
 
     /** Sets the value of the main memory at this address
      *  to the given value. */
     function void poke(int address, int value) {
-        var int memory ;
-        let memory=0;
-        let memory[address]=value;
+        
+        let freelist[address]=value;
         return;
     }
 
@@ -41,22 +38,24 @@ class Memory {
         var int block;
 
         var int segment;
+        var int pre;
 
-
-        let segment=freelist;
+        let segment=2048;
 
         while (~(segment[0]>size)){
+            let pre=segment;
             let segment=segment[1];
             if (segment=0)   {
-                return -1;
+                return "failure";
             }
         }
 
 
-        let block=segment+segment[0]-size;
+        let block=segment+(segment[0]-size);
         let segment[0]=segment[0]-(size+1);
-        if (segment[0]=0)   {
-            let segment[0]=segment[1];
+        if (segment[0]<3)   {
+            let block =segment;
+            let pre[1]=segment[1];
         }
         let block[-1]=size+1;
         return block;
@@ -66,13 +65,13 @@ class Memory {
     /** De-allocates the given object and frees its space. */
     function void deAlloc(int object) {
         var int segment;
-        let segment=freelist;
-        while (~(segment[1]=null))  {
+        let segment=2048;
+        while (~(segment[1]=0))  {
             let segment=segment[1];
         }
 
-        let segment[1]=object-1;
-        let object[1]=null;
+        let segment=object-1;
+        let segment[0]=object[-1];
         return;
     }
 }

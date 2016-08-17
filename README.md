@@ -17,3 +17,7 @@
 
 #Project **12**
 -   [Array & Math & String] .class(es) finished -- August 15 2016
+-   Memory.class finished -- August 16 2016j
+-   Keyboard.class finished -- August 17 2016
+
+###project 1-11 have all been finisehd. NEARLY 1 MONTH. The most meaningful month this year. However, there are too many details to be taken care of in project 12 and I have little knowledge of how to do ( as a student majoring in humanities). So, good Bye, project 12. But I promise I will return soon after I know more, and get more and better CS skills.

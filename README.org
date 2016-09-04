@@ -1,0 +1,27 @@
+* 《计算机系统要素：从零开始构建计算机》
+** 一点感想和碎碎念
+*** 这个 github 库是我做的这本书配套的 project，从基础的逻辑门到顶层的计算机操作系统，其中包括 cpu,计算机芯片，assembler，translator 等等的编写，全部独立完成，参考了官方论坛里的一些 FAQ。
+*** 这是我的第一个小项目，起初并没有想到要放到 github 来托管，代码没有做好好的注释，也还有很多值得优化的地方（不知道该怎么优化，所以仍在学习一些底层知识）/(反正就是写得不怎么样，但是我喜欢^_^)。
+*** 在学校呆了一个昏天黑地的暑假，虽然每天都很累，尤其是在写这个项目的高级部分的时候（有时是一天一顿饭的状况），但是累得很开心，因为我从中得出了一个结论：我真的很喜欢 CS。
+*** 真正开始自学 CS 是从今年六月份开始的，想想自己能在 3 个月里有这么大的进步，还是蛮开心的^_^……
+** Project /01**06/
+*** finished
+
+** Project /07/
+*** finished <2016-08-04 四>
+
+** Project /08/
+***  finished <2016-08-07 日>
+
+** Project /10/
+*** JackTokenizer.py finished <2016-08-08 一>
+*** CompilationEngine.py & JackAnalyzer.py finished <2016-08-10 三> 
+
+** Project /11/
+***  finished <2016-08-14 日> 
+
+** Project /12/
+***  Array.class & Math.class & String.class finished <2016-08-15 一> 
+***  Memory.class finished <2016-08-16 二>
+***  Keyboard.class finished <2016-08-17 三>
+
